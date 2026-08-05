@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Panel Identification</title>
+    <link rel="stylesheet" href="static/predict.css">
+</head>
+
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-brand">SOLAR PANEL MONITORING</a>
+            <button class="navbar-toggler" id="navbar-toggler">☰</button>
+            <ul class="navbar-nav" id="navbar-menu">
+                <li><a href="/" class="nav-link">HOME</a></li>
+                <li><a href="/about" class="nav-link">ABOUT</a></li>
+                <li><a href="/contact" class="nav-link">CONTACT</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Solar Panel Monitoring</h1>
+        <p style="color:white">Upload an image to identify the type or status of the solar panel.</p>
+
+        <div class="upload-box">
+            <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
+                <label for="file-upload" class="custom-file-upload">Choose Image</label>
+                <input id="file-upload" type="file" name="image" accept="image/*" onchange="previewImage(event)">
+                <button id="submit-btn" type="submit">Predict</button>
+            </form>
+        </div>
+
+        
+      
+       
+
+        <div class="prediction-results">
+            <h2>Prediction Results:</h2>
+            <ul>
+                {% for label, confidence in pred %}
+                    <li><strong>{{ label }}</strong>: {{ confidence }}%</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var preview = document.getElementById('preview');
+                preview.src = reader.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>
